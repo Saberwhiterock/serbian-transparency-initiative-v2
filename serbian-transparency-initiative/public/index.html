@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Serbian Transparency Initiative | Anti-Corruption Reporting</title>
+  <meta name="description" content="U.S.-based organization accepting anonymous reports of corruption in Serbian institutions and the trucking industry. Your voice matters. Your identity is protected.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=Playfair+Display:wght@700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/css/style.css">
+  <link rel="icon" href="/images/logo.svg" type="image/svg+xml">
+</head>
+<body>
+
+  <!-- ─── NAVBAR ─── -->
+  <nav class="navbar">
+    <a href="/" class="navbar-brand">
+      <img src="/images/logo.svg" alt="STI Logo">
+      <span class="navbar-brand-text">Serbian<br>Transparency<br>Initiative</span>
+    </a>
+    <button class="hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul class="navbar-links" id="navLinks">
+      <li><a href="#about">About</a></li>
+      <li><a href="#pillars">Reports</a></li>
+      <li><a href="#how">How It Works</a></li>
+      <li><a href="#contact" data-modal="contactModal">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- ─── HERO ─── -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-tag">U.S.-Based &middot; Independent &middot; Confidential</div>
+      <h1>Fighting Corruption.<br><span class="accent">Protecting Communities.</span></h1>
+      <p>Serbian Transparency Initiative is an independent U.S.-based organization that gives everyday people a safe way to expose corruption, abuse, and fraud, no matter where it happens.</p>
+      <div class="hero-buttons">
+        <a href="#pillars" class="btn btn-primary">Report Corruption</a>
+        <a href="#about" class="btn btn-ghost">Learn More</a>
+      </div>
+      <div class="hero-stats">
+        <div class="stat">
+          <div class="stat-num">100%</div>
+          <div class="stat-label">Anonymous</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">24/7</div>
+          <div class="stat-label">Secure Intake</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">U.S.</div>
+          <div class="stat-label">Based &amp; Registered</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TWO PILLARS ─── -->
+  <section class="pillars" id="pillars">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">What We Cover</span>
+        <h2>Two Fronts. One Mission.</h2>
+        <p class="lead">We currently accept reports in two focus areas where corruption has gone unchecked for too long.</p>
+      </div>
+
+      <div class="pillars-grid">
+        <!-- CHURCH PILLAR -->
+        <div class="pillar-card" id="church">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M32 4 L32 14 M28 9 L36 9"/>
+              <path d="M32 14 L18 28 L18 56 L46 56 L46 28 Z"/>
+              <path d="M18 56 L12 56 L12 36 L18 36"/>
+              <path d="M46 56 L52 56 L52 36 L46 36"/>
+              <rect x="28" y="38" width="8" height="18"/>
+              <circle cx="32" cy="26" r="3"/>
+            </svg>
+          </div>
+          <h3>Church &amp; Religious Institutions</h3>
+          <p>Reports of financial misconduct, property misuse, abuse of power, or fraud involving Serbian Orthodox institutions and affiliated organizations.</p>
+          <ul class="pillar-list">
+            <li>Financial misconduct &amp; embezzlement</li>
+            <li>Misuse of donations or parish property</li>
+            <li>Abuse of position or authority</li>
+            <li>Concealment of wrongdoing</li>
+          </ul>
+          <button class="btn btn-dark" data-modal="churchModal">Report Church Corruption</button>
+        </div>
+
+        <!-- TRUCKING PILLAR -->
+        <div class="pillar-card" id="trucking">
+          <div class="pillar-icon">
+            <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="4" y="20" width="34" height="24"/>
+              <path d="M38 28 L52 28 L58 36 L58 44 L38 44 Z"/>
+              <circle cx="16" cy="48" r="5"/>
+              <circle cx="48" cy="48" r="5"/>
+              <line x1="10" y1="28" x2="32" y2="28"/>
+              <line x1="10" y1="34" x2="32" y2="34"/>
+            </svg>
+          </div>
+          <h3>Trucking Industry</h3>
+          <p>Truck drivers deserve fairness, not exploitation. We accept anonymous reports of abuse and fraud in the trucking industry.</p>
+          <ul class="pillar-list">
+            <li>Unpaid wages or missing miles</li>
+            <li>Fake or manipulated rate confirmations</li>
+            <li>Pressure to violate logbook regulations</li>
+            <li>Illegal deductions from paychecks</li>
+            <li>Misleading or deceptive load agreements</li>
+          </ul>
+          <button class="btn btn-dark" data-modal="truckingModal">Report Trucking Abuse</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ─── -->
+  <section class="about" id="about">
+    <div class="container about-grid">
+      <div class="about-visual">
+        <div class="about-visual-inner">
+          <img src="/images/logo.svg" alt="Shield">
+          <blockquote>
+            &ldquo;Silence protects the corrupt. Transparency protects everyone else.&rdquo;
+          </blockquote>
+        </div>
+      </div>
+      <div class="about-content">
+        <span class="eyebrow">About Us</span>
+        <h2>An independent voice for those who don&rsquo;t have one.</h2>
+        <p>The Serbian Transparency Initiative (STI) is a U.S.-based organization dedicated to exposing corruption and protecting the people it affects most: everyday members of the Serbian diaspora community.</p>
+        <p>We started with a single mission: give people a safe channel to speak up when institutions fail them. Whether the abuse happens inside a parish office or inside a trucking company, the person reporting it deserves protection, respect, and a real chance at justice.</p>
+        <p>We are independent. We are confidential. We are on the side of the people who speak up.</p>
+        <div class="about-badges">
+          <div class="badge">
+            <strong>Independent</strong>
+            <span>No political or institutional ties</span>
+          </div>
+          <div class="badge">
+            <strong>Confidential</strong>
+            <span>Your identity is never shared without consent</span>
+          </div>
+          <div class="badge">
+            <strong>Accountable</strong>
+            <span>Every report is reviewed and tracked</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── TRUCKING SPOTLIGHT ─── -->
+  <section class="spotlight spotlight-trucking">
+    <div class="container spotlight-grid">
+      <div class="spotlight-content">
+        <span class="eyebrow light">Trucking Industry</span>
+        <h2>Truck drivers deserve fairness, not exploitation.</h2>
+        <p class="lead">Serbian Transparency Initiative is now accepting anonymous reports related to abuse and fraud in the trucking industry.</p>
+        <p>If you have experienced any of the following, we want to hear from you:</p>
+        <ul class="check-list">
+          <li>Unpaid wages or missing miles</li>
+          <li>Fake or manipulated rate confirmations</li>
+          <li>Pressure to violate logbook regulations</li>
+          <li>Illegal deductions from your paycheck</li>
+          <li>Misleading or deceptive load agreements</li>
+        </ul>
+        <p class="muted">All reports are confidential. You do not need to provide your name. Evidence like pay stubs, rate confirmations, messages, and logs helps us investigate, but is never required.</p>
+        <button class="btn btn-primary" data-modal="truckingModal">Submit a Trucking Report</button>
+      </div>
+      <div class="spotlight-visual">
+        <div class="spotlight-art spotlight-art-trucking"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── HOW IT WORKS ─── -->
+  <section class="how" id="how">
+    <div class="container">
+      <div class="section-header center">
+        <span class="eyebrow">How It Works</span>
+        <h2>Three simple steps. Zero exposure.</h2>
+      </div>
+      <div class="how-grid">
+        <div class="how-step">
+          <div class="how-num">01</div>
+          <h3>Submit Your Report</h3>
+          <p>Fill out the secure form with as much or as little detail as you can share. You can remain completely anonymous.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">02</div>
+          <h3>We Review &amp; Verify</h3>
+          <p>Our team reviews every submission, cross-references evidence where possible, and assesses the credibility and urgency of each case.</p>
+        </div>
+        <div class="how-step">
+          <div class="how-num">03</div>
+          <h3>We Take Action</h3>
+          <p>Verified cases are escalated to media, legal partners, or relevant authorities in a way that always protects the reporter&rsquo;s identity.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CHURCH SPOTLIGHT ─── -->
+  <section class="spotlight spotlight-church">
+    <div class="container spotlight-grid reverse">
+      <div class="spotlight-visual">
+        <div class="spotlight-art spotlight-art-church"></div>
+      </div>
+      <div class="spotlight-content">
+        <span class="eyebrow light">Church &amp; Religious Institutions</span>
+        <h2>Faith deserves integrity.</h2>
+        <p class="lead">Trust placed in religious institutions is sacred, and when that trust is violated, the damage runs deep.</p>
+        <p>We accept reports of financial misconduct, property misuse, abuse of authority, and concealment of wrongdoing within Serbian Orthodox institutions and affiliated organizations.</p>
+        <p class="muted">Every report is handled with discretion. Your identity is protected. We never contact the institution you&rsquo;re reporting without your permission.</p>
+        <button class="btn btn-light" data-modal="churchModal">Submit a Church Report</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── CTA ─── -->
+  <section class="cta">
+    <div class="container">
+      <h2>You saw something. Now what?</h2>
+      <p>Reporting takes courage. We make it safe, simple, and anonymous.</p>
+      <div class="cta-buttons">
+        <button class="btn btn-primary" data-modal="churchModal">Church Report</button>
+        <button class="btn btn-primary" data-modal="truckingModal">Trucking Report</button>
+        <button class="btn btn-ghost" data-modal="contactModal">Contact Us</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ─── -->
+  <footer class="footer">
+    <div class="container footer-grid">
+      <div class="footer-col footer-brand">
+        <div class="navbar-brand">
+          <img src="/images/logo.svg" alt="STI Logo">
+          <span class="navbar-brand-text">Serbian<br>Transparency<br>Initiative</span>
+        </div>
+        <p>An independent U.S.-based organization fighting corruption and protecting the communities affected by it.</p>
+      </div>
+      <div class="footer-col">
+        <h4>Report</h4>
+        <a href="#" data-modal="churchModal">Church Corruption</a>
+        <a href="#" data-modal="truckingModal">Trucking Abuse</a>
+        <a href="#" data-modal="evidenceModal">Submit Evidence</a>
+      </div>
+      <div class="footer-col">
+        <h4>Organization</h4>
+        <a href="#about">About</a>
+        <a href="#how">How It Works</a>
+        <a href="#" data-modal="contactModal">Contact</a>
+      </div>
+      <div class="footer-col">
+        <h4>Contact</h4>
+        <a href="mailto:info@serbiantransparency.org">info@serbiantransparency.org</a>
+        <p class="muted small">For urgent or sensitive matters, please use the anonymous report forms above.</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <p>&copy; 2026 Serbian Transparency Initiative. All rights reserved.</p>
+        <p class="muted small">Independent &middot; U.S.-Based &middot; Confidential</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ═══════ MODALS ═══════ -->
+
+  <!-- CHURCH REPORT MODAL -->
+  <div class="modal-overlay" id="churchModal">
+    <div class="modal">
+      <button class="modal-close" aria-label="Close">&times;</button>
+      <span class="modal-eyebrow">Church &amp; Religious Institutions</span>
+      <h2>Report Corruption</h2>
+      <p class="subtitle">All reports are anonymous. Your identity will never be shared without your consent.</p>
+      <form id="churchForm" class="report-form" data-type="church">
+        <div class="form-group">
+          <label>Type of Issue</label>
+          <select name="category" required>
+            <option value="">Select a category...</option>
+            <option value="financial">Financial Misconduct / Embezzlement</option>
+            <option value="property">Property / Asset Misuse</option>
+            <option value="abuse_of_power">Abuse of Power</option>
+            <option value="fraud">Fraud</option>
+            <option value="cover_up">Concealment of Wrongdoing</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Institution / Location</label>
+          <input type="text" name="location" placeholder="Parish, organization, city, state..." required>
+        </div>
+        <div class="form-group">
+          <label>Date of Incident <span class="optional">(optional)</span></label>
+          <input type="date" name="incident_date">
+        </div>
+        <div class="form-group">
+          <label>Describe what happened</label>
+          <textarea name="description" placeholder="Share as much detail as you can. The more specific, the better we can investigate..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>People Involved <span class="optional">(optional)</span></label>
+          <textarea name="people_involved" placeholder="Names, titles, roles..." style="min-height:70px;"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Contact Email <span class="optional">(optional, for updates)</span></label>
+          <input type="email" name="contact_email" placeholder="your@email.com">
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="churchConsent" required>
+          <label for="churchConsent">I confirm this report is truthful to the best of my knowledge.</label>
+        </div>
+        <button type="submit" class="btn-submit">Submit Report</button>
+      </form>
+      <div class="success-message" style="display:none;">
+        <div class="checkmark">&#10003;</div>
+        <h3>Report Received</h3>
+        <p>Your report has been submitted securely. Our team will review it within 72 hours.</p>
+        <p class="ref-number"></p>
+        <p class="small muted">Save this reference number. You can use it to contact us about your report later.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TRUCKING REPORT MODAL -->
+  <div class="modal-overlay" id="truckingModal">
+    <div class="modal">
+      <button class="modal-close" aria-label="Close">&times;</button>
+      <span class="modal-eyebrow">Trucking Industry</span>
+      <h2>Report Abuse or Fraud</h2>
+      <p class="subtitle">Truck drivers deserve fairness. Your report is anonymous and confidential.</p>
+      <form id="truckingForm" class="report-form" data-type="trucking">
+        <div class="form-group">
+          <label>Type of Issue</label>
+          <select name="category" required>
+            <option value="">Select a category...</option>
+            <option value="unpaid_wages">Unpaid Wages or Missing Miles</option>
+            <option value="rate_con_fraud">Fake or Manipulated Rate Confirmations</option>
+            <option value="logbook">Pressure to Violate Logbook Regulations</option>
+            <option value="illegal_deductions">Illegal Paycheck Deductions</option>
+            <option value="deceptive_loads">Misleading or Deceptive Load Agreements</option>
+            <option value="retaliation">Retaliation for Speaking Up</option>
+            <option value="safety">Unsafe Working Conditions</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Company / Carrier Name</label>
+          <input type="text" name="company" placeholder="Name of trucking company, carrier, or broker..." required>
+        </div>
+        <div class="form-group">
+          <label>MC / DOT Number <span class="optional">(if known)</span></label>
+          <input type="text" name="mc_dot" placeholder="e.g. MC-123456 or DOT 9876543">
+        </div>
+        <div class="form-group">
+          <label>Your Role</label>
+          <select name="role">
+            <option value="">Select...</option>
+            <option value="driver">Driver</option>
+            <option value="owner_operator">Owner-Operator</option>
+            <option value="dispatcher">Dispatcher</option>
+            <option value="family">Family Member of Driver</option>
+            <option value="witness">Witness / Former Employee</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Time Period</label>
+          <input type="text" name="time_period" placeholder="e.g. March 2025 to present, or specific dates...">
+        </div>
+        <div class="form-group">
+          <label>Describe what happened</label>
+          <textarea name="description" placeholder="What happened? How much money is involved? Who was responsible? Any specifics help..." required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Estimated Financial Impact <span class="optional">(optional)</span></label>
+          <input type="text" name="amount" placeholder="e.g. $5,000 in unpaid miles...">
+        </div>
+        <div class="form-group">
+          <label>Contact Email or Phone <span class="optional">(optional, for follow-up)</span></label>
+          <input type="text" name="contact_email" placeholder="your@email.com or phone">
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="truckingConsent" required>
+          <label for="truckingConsent">I confirm this report is truthful to the best of my knowledge.</label>
+        </div>
+        <button type="submit" class="btn-submit">Submit Report</button>
+      </form>
+      <div class="success-message" style="display:none;">
+        <div class="checkmark">&#10003;</div>
+        <h3>Report Received</h3>
+        <p>Your report has been submitted securely. Our team will review it within 72 hours.</p>
+        <p class="ref-number"></p>
+        <p class="small muted">Save this reference number. You can use it to contact us about your report later.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- EVIDENCE MODAL -->
+  <div class="modal-overlay" id="evidenceModal">
+    <div class="modal">
+      <button class="modal-close" aria-label="Close">&times;</button>
+      <span class="modal-eyebrow">Evidence Upload</span>
+      <h2>Submit Evidence</h2>
+      <p class="subtitle">Upload supporting documents, photos, pay stubs, rate confirmations, or other files.</p>
+      <form id="evidenceForm" enctype="multipart/form-data">
+        <div class="form-group">
+          <label>Related Report Reference <span class="optional">(optional)</span></label>
+          <input type="text" name="case_ref" placeholder="e.g. REP-20260406-A3F2">
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select name="category" required>
+            <option value="">Select category...</option>
+            <option value="financial_docs">Financial Documents / Pay Stubs</option>
+            <option value="rate_cons">Rate Confirmations</option>
+            <option value="messages">Messages / Communications</option>
+            <option value="logs">Logs / Timesheets</option>
+            <option value="photos">Photos or Videos</option>
+            <option value="official_docs">Official Documents</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Description of Evidence</label>
+          <textarea name="description" placeholder="What does this evidence show?" required></textarea>
+        </div>
+        <div class="form-group">
+          <label>Upload Files</label>
+          <div class="file-upload">
+            <label class="file-label" for="evidenceFiles">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+              Click to upload (max 10MB each)
+            </label>
+            <input type="file" id="evidenceFiles" name="files" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.mp4,.mp3">
+            <div class="file-names" id="evidenceFileNames"></div>
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Contact Email <span class="optional">(optional)</span></label>
+          <input type="email" name="contact_email" placeholder="your@email.com">
+        </div>
+        <div class="form-check">
+          <input type="checkbox" id="evidenceConsent" required>
+          <label for="evidenceConsent">I confirm this evidence is authentic and not manipulated.</label>
+        </div>
+        <button type="submit" class="btn-submit">Submit Evidence</button>
+      </form>
+      <div class="success-message" style="display:none;">
+        <div class="checkmark">&#10003;</div>
+        <h3>Evidence Received</h3>
+        <p>Your evidence has been securely stored and linked to your case.</p>
+        <p class="ref-number"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTACT MODAL -->
+  <div class="modal-overlay" id="contactModal">
+    <div class="modal">
+      <button class="modal-close" aria-label="Close">&times;</button>
+      <span class="modal-eyebrow">General Inquiries</span>
+      <h2>Contact Us</h2>
+      <p class="subtitle">For non-report inquiries: press, partnerships, volunteering, or general questions.</p>
+      <form id="contactForm">
+        <div class="form-group">
+          <label>Your Name <span class="optional">(optional)</span></label>
+          <input type="text" name="name" placeholder="Your name...">
+        </div>
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="your@email.com" required>
+        </div>
+        <div class="form-group">
+          <label>Subject</label>
+          <select name="subject" required>
+            <option value="">Select subject...</option>
+            <option value="general">General Inquiry</option>
+            <option value="press">Press / Media</option>
+            <option value="volunteer">Volunteer</option>
+            <option value="partnership">Partnership</option>
+            <option value="report_status">Existing Report Status</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Message</label>
+          <textarea name="message" placeholder="Your message..." required></textarea>
+        </div>
+        <button type="submit" class="btn-submit">Send Message</button>
+      </form>
+      <div class="success-message" style="display:none;">
+        <div class="checkmark">&#10003;</div>
+        <h3>Message Sent</h3>
+        <p>We&rsquo;ll get back to you as soon as possible.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="toast" id="toast"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

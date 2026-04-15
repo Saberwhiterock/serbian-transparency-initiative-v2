@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="600" viewBox="0 0 1200 600">
+  <rect fill="#3a3a3a" width="1200" height="600"/>
+  <!-- Abstract desk/writing scene suggestion -->
+  <rect fill="#444" x="600" y="200" width="500" height="300" rx="4" transform="rotate(-5 850 350)"/>
+  <rect fill="#4a4a4a" x="650" y="250" width="400" height="200" rx="2" transform="rotate(-5 850 350)"/>
+  <line x1="700" y1="300" x2="900" y2="290" stroke="#555" stroke-width="2"/>
+  <line x1="700" y1="330" x2="950" y2="318" stroke="#555" stroke-width="2"/>
+  <line x1="700" y1="360" x2="880" y2="350" stroke="#555" stroke-width="2"/>
+  <!-- Pen -->
+  <line x1="820" y1="380" x2="870" y2="250" stroke="#666" stroke-width="6" stroke-linecap="round"/>
+</svg>

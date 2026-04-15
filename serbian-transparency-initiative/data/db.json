@@ -1,0 +1,83 @@
+{
+  "reports": [
+    {
+      "id": 1,
+      "reference": "REP-20260406-87FE",
+      "category": "financial",
+      "location": "Belgrade",
+      "incident_date": null,
+      "description": "Test report",
+      "people_involved": null,
+      "contact_email": null,
+      "status": "pending",
+      "created_at": "2026-04-06T15:21:16.965Z"
+    },
+    {
+      "id": 2,
+      "reference": "REP-20260411-AD7A",
+      "category": "fraud",
+      "location": "Nbt",
+      "incident_date": "0006-10-10",
+      "description": "afdsvfbdv",
+      "people_involved": "Popa",
+      "contact_email": "iticojevic@gmail.com",
+      "status": "pending",
+      "created_at": "2026-04-11T06:34:18.652Z"
+    },
+    {
+      "id": 3,
+      "reference": "CHR-20260415-93B5",
+      "type": "church",
+      "category": "financial",
+      "location": "Test Parish, Chicago IL",
+      "description": "Test description of incident",
+      "status": "pending",
+      "ip": "::ffff:127.0.0.1",
+      "created_at": "2026-04-15T08:30:09.435Z"
+    },
+    {
+      "id": 4,
+      "reference": "TRK-20260415-7E9A",
+      "type": "trucking",
+      "category": "unpaid_wages",
+      "company": "ACME Trucking LLC",
+      "mc_dot": "MC-123456",
+      "description": "Missing wages for 3 weeks of work",
+      "amount": "$4500",
+      "status": "pending",
+      "ip": "::ffff:127.0.0.1",
+      "created_at": "2026-04-15T08:30:09.439Z"
+    }
+  ],
+  "evidence": [],
+  "contacts": [
+    {
+      "id": 1,
+      "name": "Anonymous",
+      "email": "test@test.com",
+      "subject": "general",
+      "message": "Hello",
+      "status": "unread",
+      "created_at": "2026-04-06T15:21:16.970Z"
+    },
+    {
+      "id": 2,
+      "name": "Nikola ",
+      "email": "iticojevic@gmail.com",
+      "subject": "report_status",
+      "message": "Jel radi ovo?",
+      "status": "unread",
+      "created_at": "2026-04-11T06:31:02.499Z"
+    },
+    {
+      "id": 3,
+      "name": "Anonymous",
+      "email": "test@test.com",
+      "subject": "press",
+      "message": "Test inquiry",
+      "status": "unread",
+      "ip": "::ffff:127.0.0.1",
+      "created_at": "2026-04-15T08:30:09.443Z"
+    }
+  ]
+}

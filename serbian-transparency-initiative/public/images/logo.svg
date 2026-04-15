@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 110" fill="none">
+  <!-- Shield outline -->
+  <path d="M50 4 L90 18 V52 C90 78 72 96 50 106 C28 96 10 78 10 52 V18 Z"
+        stroke="#0a0a0a" stroke-width="5" fill="none" stroke-linejoin="round"/>
+
+  <!-- Scales: vertical post -->
+  <line x1="50" y1="28" x2="50" y2="74" stroke="#0a0a0a" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Crossbeam -->
+  <line x1="26" y1="40" x2="74" y2="40" stroke="#0a0a0a" stroke-width="4" stroke-linecap="round"/>
+
+  <!-- Left scale chains -->
+  <line x1="32" y1="40" x2="24" y2="52" stroke="#0a0a0a" stroke-width="2.5"/>
+  <line x1="32" y1="40" x2="40" y2="52" stroke="#0a0a0a" stroke-width="2.5"/>
+
+  <!-- Right scale chains -->
+  <line x1="68" y1="40" x2="60" y2="52" stroke="#0a0a0a" stroke-width="2.5"/>
+  <line x1="68" y1="40" x2="76" y2="52" stroke="#0a0a0a" stroke-width="2.5"/>
+
+  <!-- Left pan (filled trapezoid) -->
+  <path d="M20 50 L44 50 L40 58 L24 58 Z" fill="#0a0a0a"/>
+
+  <!-- Right pan (filled trapezoid) -->
+  <path d="M56 50 L80 50 L76 58 L60 58 Z" fill="#0a0a0a"/>
+
+  <!-- Base -->
+  <rect x="40" y="72" width="20" height="6" fill="#0a0a0a"/>
+  <rect x="36" y="76" width="28" height="5" fill="#0a0a0a"/>
+</svg>
