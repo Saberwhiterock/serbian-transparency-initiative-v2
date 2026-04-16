@@ -151,7 +151,7 @@ async function sendMail({ to, subject, html, text }) {
 }
 
 // ─── Email templates ───
-function reportEmailHtml(type, data, reference) {
+function reportEmailHtml(type, data, reference, files) {
   const isChurch = type === 'church';
   const isTrucking = type === 'trucking';
   const title = isChurch ? 'Church Corruption Report' :
@@ -180,6 +180,11 @@ function reportEmailHtml(type, data, reference) {
   add('Description', data.description);
   add('Contact', data.contact_email);
   add('Submitted', new Date().toISOString());
+
+  if (files && files.length) {
+    const fileList = files.map(f => `${f.original_name} (${(f.size/1024).toFixed(1)} KB)`).join(', ');
+    add('Attached Files', fileList);
+  }
 
   const rowHtml = rows.map(([k, v]) => `
     <tr>
@@ -373,17 +378,17 @@ const server = http.createServer(async (req, res) => {
 
   // ─── REPORTS (church + trucking) ───
   if (pathname === '/api/reports' && method === 'POST') {
-    const body = await parseJSON(req);
-    const type = body.report_type || 'church';
-    const { category, description } = body;
+    const { fields, files } = await parseMultipart(req);
+    const type = fields.report_type || 'church';
+    const { category, description } = fields;
 
     if (!category || !description) {
       return sendJSON(res, 400, { error: 'Please fill in all required fields.' });
     }
-    if (type === 'church' && !body.location) {
+    if (type === 'church' && !fields.location) {
       return sendJSON(res, 400, { error: 'Please provide the institution or location.' });
     }
-    if (type === 'trucking' && !body.company) {
+    if (type === 'trucking' && !fields.company) {
       return sendJSON(res, 400, { error: 'Please provide the company name.' });
     }
 
@@ -393,7 +398,8 @@ const server = http.createServer(async (req, res) => {
       id: data.reports.length + 1,
       reference,
       type,
-      ...body,
+      ...fields,
+      files: files.length ? files : [],
       status: 'pending',
       ip,
       created_at: new Date().toISOString()
@@ -403,14 +409,14 @@ const server = http.createServer(async (req, res) => {
     writeDB(data);
 
     // Fire-and-forget email
-    const subject = type === 'trucking'
+    const emailSubject = type === 'trucking'
       ? `[STI] New Trucking Report — ${reference}`
       : `[STI] New Church Report — ${reference}`;
     sendMail({
       to: NOTIFY_TO,
-      subject,
-      html: reportEmailHtml(type, body, reference),
-      text: `New ${type} report received. Reference: ${reference}`
+      subject: emailSubject,
+      html: reportEmailHtml(type, fields, reference, files),
+      text: `New ${type} report received. Reference: ${reference}` + (files.length ? ` (${files.length} file(s) attached)` : '')
     }).catch(() => {});
 
     return sendJSON(res, 200, { success: true, reference });

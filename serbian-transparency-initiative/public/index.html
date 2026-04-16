@@ -26,6 +26,7 @@
       <li><a href="#about">About</a></li>
       <li><a href="#pillars">Reports</a></li>
       <li><a href="#how">How It Works</a></li>
+      <!-- <li><a href="#donate">Donate</a></li> -->
       <li><a href="#contact" data-modal="contactModal">Contact</a></li>
     </ul>
   </nav>
@@ -106,6 +107,7 @@
           </div>
           <h3>Trucking Industry</h3>
           <p>Truck drivers deserve fairness, not exploitation. We accept anonymous reports of abuse and fraud in the trucking industry.</p>
+          <p class="pillar-note">No matter your status &mdash; company driver or owner-operator.</p>
           <ul class="pillar-list">
             <li>Unpaid wages or missing miles</li>
             <li>Fake or manipulated rate confirmations</li>
@@ -160,6 +162,7 @@
       <div class="spotlight-content">
         <span class="eyebrow light">Trucking Industry</span>
         <h2>Truck drivers deserve fairness, not exploitation.</h2>
+        <p class="spotlight-subline">No matter your status &mdash; company driver or owner-operator.</p>
         <p class="lead">Serbian Transparency Initiative is now accepting anonymous reports related to abuse and fraud in the trucking industry.</p>
         <p>If you have experienced any of the following, we want to hear from you:</p>
         <ul class="check-list">
@@ -170,6 +173,9 @@
           <li>Misleading or deceptive load agreements</li>
         </ul>
         <p class="muted">All reports are confidential. You do not need to provide your name. Evidence like pay stubs, rate confirmations, messages, and logs helps us investigate, but is never required.</p>
+        <div class="spotlight-cta-message">
+          <p>Your identity is protected. Your voice matters.<br>Reporting abuse helps protect every driver on the road.</p>
+        </div>
         <button class="btn btn-primary" data-modal="truckingModal">Submit a Trucking Report</button>
       </div>
       <div class="spotlight-visual">
@@ -222,6 +228,30 @@
     </div>
   </section>
 
+  <!-- ─── DONATE (hidden until client sets up accounts) ───
+  <section class="donate" id="donate">
+    <div class="container donate-inner">
+      <div class="donate-content">
+        <span class="eyebrow">Support Our Mission</span>
+        <h2>Help us fight corruption and protect workers.</h2>
+        <p>Your support allows us to remain independent, investigate reports, and advocate for those who cannot speak for themselves. Every contribution makes a difference.</p>
+        <div class="donate-buttons">
+          <a href="https://www.paypal.com/donate" target="_blank" rel="noopener" class="btn btn-primary">Donate via PayPal</a>
+          <a href="https://buymeacoffee.com" target="_blank" rel="noopener" class="btn btn-dark">Buy Me a Coffee</a>
+        </div>
+        <p class="muted small">All donations go directly toward operations, legal support, and community outreach.</p>
+      </div>
+      <div class="donate-visual">
+        <div class="donate-icon">
+          <svg viewBox="0 0 64 64" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M32 56C32 56 8 40 8 24C8 16 14 10 22 10C26.5 10 30.5 12.5 32 16C33.5 12.5 37.5 10 42 10C50 10 56 16 56 24C56 40 32 56 32 56Z"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+  -->
+
   <!-- ─── CTA ─── -->
   <section class="cta">
     <div class="container">
@@ -263,6 +293,20 @@
         <p class="muted small">For urgent or sensitive matters, please use the anonymous report forms above.</p>
       </div>
     </div>
+    <div class="footer-legal">
+      <div class="container">
+        <div class="legal-grid">
+          <div class="legal-col">
+            <h4>Disclaimer</h4>
+            <p>Serbian Transparency Initiative does not provide legal advice and does not act as a law enforcement agency. All reports are submitted voluntarily and are reviewed for informational purposes. We do not guarantee investigation outcomes. False reporting may have legal consequences.</p>
+          </div>
+          <div class="legal-col">
+            <h4>Privacy</h4>
+            <p>We do not collect personal data unless voluntarily provided. All submissions can be anonymous. We take reasonable steps to protect submitted information but cannot guarantee absolute security.</p>
+          </div>
+        </div>
+      </div>
+    </div>
     <div class="footer-bottom">
       <div class="container">
         <p>&copy; 2026 Serbian Transparency Initiative. All rights reserved.</p>
@@ -280,7 +324,7 @@
       <span class="modal-eyebrow">Church &amp; Religious Institutions</span>
       <h2>Report Corruption</h2>
       <p class="subtitle">All reports are anonymous. Your identity will never be shared without your consent.</p>
-      <form id="churchForm" class="report-form" data-type="church">
+      <form id="churchForm" class="report-form" data-type="church" enctype="multipart/form-data">
         <div class="form-group">
           <label>Type of Issue</label>
           <select name="category" required>
@@ -310,6 +354,17 @@
           <textarea name="people_involved" placeholder="Names, titles, roles..." style="min-height:70px;"></textarea>
         </div>
         <div class="form-group">
+          <label>Attach Images or Documents <span class="optional">(optional)</span></label>
+          <div class="file-upload">
+            <label class="file-label" for="churchFiles">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+              Click to upload images or documents (max 10MB each)
+            </label>
+            <input type="file" id="churchFiles" name="files" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.mp4,.mp3">
+            <div class="file-names" id="churchFileNames"></div>
+          </div>
+        </div>
+        <div class="form-group">
           <label>Contact Email <span class="optional">(optional, for updates)</span></label>
           <input type="email" name="contact_email" placeholder="your@email.com">
         </div>
@@ -336,7 +391,7 @@
       <span class="modal-eyebrow">Trucking Industry</span>
       <h2>Report Abuse or Fraud</h2>
       <p class="subtitle">Truck drivers deserve fairness. Your report is anonymous and confidential.</p>
-      <form id="truckingForm" class="report-form" data-type="trucking">
+      <form id="truckingForm" class="report-form" data-type="trucking" enctype="multipart/form-data">
         <div class="form-group">
           <label>Type of Issue</label>
           <select name="category" required>
@@ -382,6 +437,17 @@
         <div class="form-group">
           <label>Estimated Financial Impact <span class="optional">(optional)</span></label>
           <input type="text" name="amount" placeholder="e.g. $5,000 in unpaid miles...">
+        </div>
+        <div class="form-group">
+          <label>Attach Images or Documents <span class="optional">(optional)</span></label>
+          <div class="file-upload">
+            <label class="file-label" for="truckingFiles">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg>
+              Click to upload images or documents (max 10MB each)
+            </label>
+            <input type="file" id="truckingFiles" name="files" multiple accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.mp4,.mp3">
+            <div class="file-names" id="truckingFileNames"></div>
+          </div>
         </div>
         <div class="form-group">
           <label>Contact Email or Phone <span class="optional">(optional, for follow-up)</span></label>

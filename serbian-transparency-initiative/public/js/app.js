@@ -60,15 +60,15 @@ function showToast(message, isError = false) {
 }
 
 // ─── FILE UPLOAD ───
-const evidenceFiles = document.getElementById('evidenceFiles');
-const evidenceFileNames = document.getElementById('evidenceFileNames');
-
-if (evidenceFiles) {
-  evidenceFiles.addEventListener('change', () => {
-    const names = Array.from(evidenceFiles.files).map(f => f.name).join(', ');
-    evidenceFileNames.textContent = names || '';
-  });
-}
+document.querySelectorAll('input[type="file"]').forEach(input => {
+  const namesEl = input.parentElement.querySelector('.file-names');
+  if (namesEl) {
+    input.addEventListener('change', () => {
+      const names = Array.from(input.files).map(f => f.name).join(', ');
+      namesEl.textContent = names || '';
+    });
+  }
+});
 
 // ─── REPORT FORMS (church + trucking share logic) ───
 async function submitReport(form, endpoint, type) {
@@ -77,14 +77,13 @@ async function submitReport(form, endpoint, type) {
   submitBtn.disabled = true;
   submitBtn.textContent = 'Submitting...';
 
-  const data = Object.fromEntries(new FormData(form));
-  data.report_type = type;
+  const formData = new FormData(form);
+  formData.append('report_type', type);
 
   try {
     const res = await fetch(endpoint, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
+      body: formData
     });
     const result = await res.json();
 
