@@ -268,7 +268,7 @@ function parseJSON(req) {
 
 function parseMultipart(req) {
   return new Promise((resolve, reject) => {
-    const boundary = req.headers['content-type']?.match(/boundary=(.+)/)?.[1];
+    const boundary = req.headers['content-type']?.match(/boundary=([^\s;]+)/)?.[1];
     if (!boundary) return resolve({ fields: {}, files: [] });
     const chunks = [];
     req.on('data', chunk => chunks.push(chunk));
@@ -305,7 +305,12 @@ function parseMultipart(req) {
           const allowed = ['.pdf','.jpg','.jpeg','.png','.doc','.docx','.mp4','.mp3'];
           if (allowed.includes(ext) && body.length <= 10 * 1024 * 1024) {
             const storedName = crypto.randomBytes(16).toString('hex') + ext;
-            fs.writeFileSync(path.join(UPLOAD_DIR, storedName), body);
+            try {
+              if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true });
+              fs.writeFileSync(path.join(UPLOAD_DIR, storedName), body);
+            } catch (err) {
+              console.error('[upload] Failed to save file:', err.message);
+            }
             files.push({
               original_name: originalName,
               stored_name: storedName,
@@ -378,48 +383,53 @@ const server = http.createServer(async (req, res) => {
 
   // ─── REPORTS (church + trucking) ───
   if (pathname === '/api/reports' && method === 'POST') {
-    const { fields, files } = await parseMultipart(req);
-    const type = fields.report_type || 'church';
-    const { category, description } = fields;
+    try {
+      const { fields, files } = await parseMultipart(req);
+      const type = fields.report_type || 'church';
+      const { category, description } = fields;
 
-    if (!category || !description) {
-      return sendJSON(res, 400, { error: 'Please fill in all required fields.' });
+      if (!category || !description) {
+        return sendJSON(res, 400, { error: 'Please fill in all required fields.' });
+      }
+      if (type === 'church' && !fields.location) {
+        return sendJSON(res, 400, { error: 'Please provide the institution or location.' });
+      }
+      if (type === 'trucking' && !fields.company) {
+        return sendJSON(res, 400, { error: 'Please provide the company name.' });
+      }
+
+      const reference = generateRef(type === 'trucking' ? 'TRK' : 'CHR');
+      const data = readDB();
+      const record = {
+        id: data.reports.length + 1,
+        reference,
+        type,
+        ...fields,
+        files: files.length ? files : [],
+        status: 'pending',
+        ip,
+        created_at: new Date().toISOString()
+      };
+      delete record.report_type;
+      data.reports.push(record);
+      writeDB(data);
+
+      // Fire-and-forget email
+      const emailSubject = type === 'trucking'
+        ? `[STI] New Trucking Report — ${reference}`
+        : `[STI] New Church Report — ${reference}`;
+      sendMail({
+        to: NOTIFY_TO,
+        subject: emailSubject,
+        html: reportEmailHtml(type, fields, reference, files),
+        text: `New ${type} report received. Reference: ${reference}` + (files.length ? ` (${files.length} file(s) attached)` : '')
+      }).catch(() => {});
+
+      return sendJSON(res, 200, { success: true, reference });
+    } catch (err) {
+      console.error('[reports] Error:', err);
+      return sendJSON(res, 500, { error: 'Server error. Please try again.' });
     }
-    if (type === 'church' && !fields.location) {
-      return sendJSON(res, 400, { error: 'Please provide the institution or location.' });
-    }
-    if (type === 'trucking' && !fields.company) {
-      return sendJSON(res, 400, { error: 'Please provide the company name.' });
-    }
-
-    const reference = generateRef(type === 'trucking' ? 'TRK' : 'CHR');
-    const data = readDB();
-    const record = {
-      id: data.reports.length + 1,
-      reference,
-      type,
-      ...fields,
-      files: files.length ? files : [],
-      status: 'pending',
-      ip,
-      created_at: new Date().toISOString()
-    };
-    delete record.report_type;
-    data.reports.push(record);
-    writeDB(data);
-
-    // Fire-and-forget email
-    const emailSubject = type === 'trucking'
-      ? `[STI] New Trucking Report — ${reference}`
-      : `[STI] New Church Report — ${reference}`;
-    sendMail({
-      to: NOTIFY_TO,
-      subject: emailSubject,
-      html: reportEmailHtml(type, fields, reference, files),
-      text: `New ${type} report received. Reference: ${reference}` + (files.length ? ` (${files.length} file(s) attached)` : '')
-    }).catch(() => {});
-
-    return sendJSON(res, 200, { success: true, reference });
   }
 
   // ─── EVIDENCE ───
