@@ -61,7 +61,7 @@ function escapeHtml(s) {
 }
 
 // ─── SMTP client (plain Node.js, no deps) ───
-async function sendMail({ to, subject, html, text }) {
+async function sendMail({ to, subject, html, text, attachments }) {
   if (!MAIL_ENABLED) {
     console.log(`[mail] SMTP not configured — skipping email to ${to}`);
     return { ok: false, skipped: true };
@@ -73,28 +73,67 @@ async function sendMail({ to, subject, html, text }) {
     let step = 0;
     let buffer = '';
     const fromAddr = NOTIFY_FROM;
-    const boundary = '----STI' + crypto.randomBytes(8).toString('hex');
+    const altBoundary = '----STIalt' + crypto.randomBytes(8).toString('hex');
+    const mixedBoundary = '----STImix' + crypto.randomBytes(8).toString('hex');
 
     const authUser = Buffer.from(SMTP_USER).toString('base64');
     const authPass = Buffer.from(SMTP_PASS).toString('base64');
 
-    const body =
-      `--${boundary}\r\n` +
+    const hasAttachments = attachments && attachments.length > 0;
+
+    // Build the text/html alternative part
+    const altPart =
+      `--${altBoundary}\r\n` +
       `Content-Type: text/plain; charset=UTF-8\r\n` +
       `Content-Transfer-Encoding: 7bit\r\n\r\n` +
       `${text || subject}\r\n` +
-      `--${boundary}\r\n` +
+      `--${altBoundary}\r\n` +
       `Content-Type: text/html; charset=UTF-8\r\n` +
       `Content-Transfer-Encoding: 7bit\r\n\r\n` +
       `${html}\r\n` +
-      `--${boundary}--\r\n`;
+      `--${altBoundary}--\r\n`;
+
+    let body;
+    if (hasAttachments) {
+      // Wrap alternative part + file attachments in multipart/mixed
+      let parts =
+        `--${mixedBoundary}\r\n` +
+        `Content-Type: multipart/alternative; boundary="${altBoundary}"\r\n\r\n` +
+        altPart;
+
+      for (const att of attachments) {
+        try {
+          const fileData = fs.readFileSync(path.join(UPLOAD_DIR, att.stored_name));
+          const base64Data = fileData.toString('base64');
+          const mime = att.mime_type || 'application/octet-stream';
+          parts +=
+            `--${mixedBoundary}\r\n` +
+            `Content-Type: ${mime}; name="${att.original_name}"\r\n` +
+            `Content-Disposition: attachment; filename="${att.original_name}"\r\n` +
+            `Content-Transfer-Encoding: base64\r\n\r\n`;
+          // Split base64 into 76-char lines per MIME spec
+          for (let i = 0; i < base64Data.length; i += 76) {
+            parts += base64Data.slice(i, i + 76) + '\r\n';
+          }
+        } catch (err) {
+          console.error(`[mail] Could not attach file ${att.stored_name}:`, err.message);
+        }
+      }
+      parts += `--${mixedBoundary}--\r\n`;
+      body = parts;
+    } else {
+      body = altPart;
+    }
+
+    const topBoundary = hasAttachments ? mixedBoundary : altBoundary;
+    const topType = hasAttachments ? 'multipart/mixed' : 'multipart/alternative';
 
     const message =
       `From: "Serbian Transparency Initiative" <${fromAddr}>\r\n` +
       `To: ${to}\r\n` +
       `Subject: ${subject}\r\n` +
       `MIME-Version: 1.0\r\n` +
-      `Content-Type: multipart/alternative; boundary="${boundary}"\r\n\r\n` +
+      `Content-Type: ${topType}; boundary="${topBoundary}"\r\n\r\n` +
       body;
 
     const steps = [
@@ -422,7 +461,8 @@ const server = http.createServer(async (req, res) => {
         to: NOTIFY_TO,
         subject: emailSubject,
         html: reportEmailHtml(type, fields, reference, files),
-        text: `New ${type} report received. Reference: ${reference}` + (files.length ? ` (${files.length} file(s) attached)` : '')
+        text: `New ${type} report received. Reference: ${reference}` + (files.length ? ` (${files.length} file(s) attached)` : ''),
+        attachments: files
       }).catch(() => {});
 
       return sendJSON(res, 200, { success: true, reference });
@@ -461,7 +501,8 @@ const server = http.createServer(async (req, res) => {
       to: NOTIFY_TO,
       subject: `[STI] New Evidence Submission — ${reference}`,
       html: evidenceEmailHtml(fields, reference, files),
-      text: `New evidence received. Reference: ${reference}`
+      text: `New evidence received. Reference: ${reference}`,
+      attachments: files
     }).catch(() => {});
 
     return sendJSON(res, 200, { success: true, reference });
