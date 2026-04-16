@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="400" viewBox="0 0 1200 400">
+  <rect fill="#3a3a3a" width="1200" height="400"/>
+  <!-- Lady Justice silhouette suggestion -->
+  <circle cx="900" cy="100" r="30" fill="#555"/>
+  <rect fill="#555" x="890" y="130" width="20" height="120"/>
+  <line x1="850" y1="180" x2="950" y2="180" stroke="#555" stroke-width="8"/>
+  <!-- Left scale -->
+  <line x1="850" y1="180" x2="840" y2="230" stroke="#555" stroke-width="3"/>
+  <line x1="850" y1="180" x2="860" y2="230" stroke="#555" stroke-width="3"/>
+  <line x1="835" y1="230" x2="865" y2="230" stroke="#555" stroke-width="3"/>
+  <!-- Right scale -->
+  <line x1="950" y1="180" x2="940" y2="220" stroke="#555" stroke-width="3"/>
+  <line x1="950" y1="180" x2="960" y2="220" stroke="#555" stroke-width="3"/>
+  <line x1="935" y1="220" x2="965" y2="220" stroke="#555" stroke-width="3"/>
+</svg>

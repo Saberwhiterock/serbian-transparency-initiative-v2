@@ -1,0 +1,10 @@
+{
+  "name": "serbian-transparency-initiative",
+  "version": "1.0.0",
+  "description": "Serbian Transparency Initiative - Anti-corruption reporting platform",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {}
+}
