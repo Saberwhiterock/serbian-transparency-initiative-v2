@@ -74,14 +74,26 @@ async function sendMail({ to, subject, html, text, attachments }) {
     let buffer = '';
     const fromAddr = NOTIFY_FROM;
     const altBoundary = '----STIalt' + crypto.randomBytes(8).toString('hex');
+    const relBoundary = '----STIrel' + crypto.randomBytes(8).toString('hex');
     const mixedBoundary = '----STImix' + crypto.randomBytes(8).toString('hex');
 
     const authUser = Buffer.from(SMTP_USER).toString('base64');
     const authPass = Buffer.from(SMTP_PASS).toString('base64');
 
-    const hasAttachments = attachments && attachments.length > 0;
+    const atts = attachments || [];
+    const inlineImages = atts.filter(a => /^image\//i.test(a.mime_type || ''));
+    const fileAttachments = atts.filter(a => !/^image\//i.test(a.mime_type || ''));
+    const hasInline = inlineImages.length > 0;
+    const hasFiles = fileAttachments.length > 0;
 
-    // Build the text/html alternative part
+    // Inject each inline image's CID into the HTML (replaces {{cid:stored_name}} placeholders)
+    let htmlWithCids = html;
+    for (const img of inlineImages) {
+      img.cid = `img-${img.stored_name}@sti`;
+      htmlWithCids = htmlWithCids.split(`{{cid:${img.stored_name}}}`).join(`cid:${img.cid}`);
+    }
+
+    // text/plain + text/html alternative
     const altPart =
       `--${altBoundary}\r\n` +
       `Content-Type: text/plain; charset=UTF-8\r\n` +
@@ -90,46 +102,79 @@ async function sendMail({ to, subject, html, text, attachments }) {
       `--${altBoundary}\r\n` +
       `Content-Type: text/html; charset=UTF-8\r\n` +
       `Content-Transfer-Encoding: 7bit\r\n\r\n` +
-      `${html}\r\n` +
+      `${htmlWithCids}\r\n` +
       `--${altBoundary}--\r\n`;
 
-    let body;
-    if (hasAttachments) {
-      // Wrap alternative part + file attachments in multipart/mixed
-      let parts =
-        `--${mixedBoundary}\r\n` +
-        `Content-Type: multipart/alternative; boundary="${altBoundary}"\r\n\r\n` +
-        altPart;
-
-      for (const att of attachments) {
-        try {
-          const fileData = fs.readFileSync(path.join(UPLOAD_DIR, att.stored_name));
-          const base64Data = fileData.toString('base64');
-          const mime = att.mime_type || 'application/octet-stream';
-          parts +=
-            `--${mixedBoundary}\r\n` +
-            `Content-Type: ${mime}; name="${att.original_name}"\r\n` +
-            `Content-Disposition: attachment; filename="${att.original_name}"\r\n` +
-            `Content-Transfer-Encoding: base64\r\n\r\n`;
-          // Split base64 into 76-char lines per MIME spec
-          for (let i = 0; i < base64Data.length; i += 76) {
-            parts += base64Data.slice(i, i + 76) + '\r\n';
-          }
-        } catch (err) {
-          console.error(`[mail] Could not attach file ${att.stored_name}:`, err.message);
+    function attachmentBlock(boundary, att, disposition) {
+      try {
+        const fileData = fs.readFileSync(path.join(UPLOAD_DIR, att.stored_name));
+        const base64Data = fileData.toString('base64');
+        const mime = att.mime_type || 'application/octet-stream';
+        let block =
+          `--${boundary}\r\n` +
+          `Content-Type: ${mime}; name="${att.original_name}"\r\n` +
+          `Content-Transfer-Encoding: base64\r\n`;
+        if (disposition === 'inline' && att.cid) {
+          block += `Content-ID: <${att.cid}>\r\n`;
+          block += `Content-Disposition: inline; filename="${att.original_name}"\r\n\r\n`;
+        } else {
+          block += `Content-Disposition: attachment; filename="${att.original_name}"\r\n\r\n`;
         }
+        for (let i = 0; i < base64Data.length; i += 76) {
+          block += base64Data.slice(i, i + 76) + '\r\n';
+        }
+        return block;
+      } catch (err) {
+        console.error(`[mail] Could not attach file ${att.stored_name}:`, err.message);
+        return '';
+      }
+    }
+
+    // multipart/related wraps alternative + inline images (so HTML can reference cid:)
+    const relatedPart = hasInline
+      ? (
+          `--${relBoundary}\r\n` +
+          `Content-Type: multipart/alternative; boundary="${altBoundary}"\r\n\r\n` +
+          altPart +
+          inlineImages.map(img => attachmentBlock(relBoundary, img, 'inline')).join('') +
+          `--${relBoundary}--\r\n`
+        )
+      : null;
+
+    let body;
+    let topBoundary, topType;
+    if (hasFiles) {
+      topBoundary = mixedBoundary;
+      topType = 'multipart/mixed';
+      let parts = '';
+      if (hasInline) {
+        parts +=
+          `--${mixedBoundary}\r\n` +
+          `Content-Type: multipart/related; boundary="${relBoundary}"\r\n\r\n` +
+          relatedPart;
+      } else {
+        parts +=
+          `--${mixedBoundary}\r\n` +
+          `Content-Type: multipart/alternative; boundary="${altBoundary}"\r\n\r\n` +
+          altPart;
+      }
+      for (const att of fileAttachments) {
+        parts += attachmentBlock(mixedBoundary, att, 'attachment');
       }
       parts += `--${mixedBoundary}--\r\n`;
       body = parts;
+    } else if (hasInline) {
+      topBoundary = relBoundary;
+      topType = 'multipart/related';
+      body = relatedPart;
     } else {
+      topBoundary = altBoundary;
+      topType = 'multipart/alternative';
       body = altPart;
     }
 
-    const topBoundary = hasAttachments ? mixedBoundary : altBoundary;
-    const topType = hasAttachments ? 'multipart/mixed' : 'multipart/alternative';
-
     const message =
-      `From: "Serbian Transparency Initiative" <${fromAddr}>\r\n` +
+      `From: "S.Transparency Initiative" <${fromAddr}>\r\n` +
       `To: ${to}\r\n` +
       `Subject: ${subject}\r\n` +
       `MIME-Version: 1.0\r\n` +
@@ -137,7 +182,7 @@ async function sendMail({ to, subject, html, text, attachments }) {
       body;
 
     const steps = [
-      `EHLO serbiantransparency.org\r\n`,
+      `EHLO stransparency.org\r\n`,
       `AUTH LOGIN\r\n`,
       `${authUser}\r\n`,
       `${authPass}\r\n`,
@@ -193,8 +238,10 @@ async function sendMail({ to, subject, html, text, attachments }) {
 function reportEmailHtml(type, data, reference, files) {
   const isChurch = type === 'church';
   const isTrucking = type === 'trucking';
+  const isOther = type === 'other';
   const title = isChurch ? 'Church Corruption Report' :
-                isTrucking ? 'Trucking Industry Report' : 'New Report';
+                isTrucking ? 'Trucking Industry Report' :
+                isOther ? 'Other Corruption Report' : 'New Report';
 
   const rows = [];
   const add = (label, val) => { if (val) rows.push([label, val]); };
@@ -215,15 +262,16 @@ function reportEmailHtml(type, data, reference, files) {
     add('Time Period', data.time_period);
     add('Financial Impact', data.amount);
   }
+  if (isOther) {
+    add('Subject / Organization', data.subject);
+    add('Location', data.location);
+    add('Time Period', data.time_period);
+    add('People Involved', data.people_involved);
+  }
 
   add('Description', data.description);
   add('Contact', data.contact_email);
   add('Submitted', new Date().toISOString());
-
-  if (files && files.length) {
-    const fileList = files.map(f => `${f.original_name} (${(f.size/1024).toFixed(1)} KB)`).join(', ');
-    add('Attached Files', fileList);
-  }
 
   const rowHtml = rows.map(([k, v]) => `
     <tr>
@@ -232,13 +280,39 @@ function reportEmailHtml(type, data, reference, files) {
     </tr>
   `).join('');
 
+  // Split attached files: images render inline, everything else is listed as a link
+  const images = (files || []).filter(f => /^image\//i.test(f.mime_type || ''));
+  const docs = (files || []).filter(f => !/^image\//i.test(f.mime_type || ''));
+
+  const imagesHtml = images.length ? `
+    <div style="padding:20px 28px;border-top:1px solid #eee;background:#fff;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#9a1f1f;margin-bottom:12px;">Attached Images</div>
+      ${images.map(f => `
+        <div style="margin-bottom:16px;">
+          <img src="{{cid:${f.stored_name}}}" alt="${escapeHtml(f.original_name)}" style="max-width:100%;height:auto;border-radius:6px;border:1px solid #eee;display:block;">
+          <div style="font-size:12px;color:#888;margin-top:6px;">${escapeHtml(f.original_name)} &middot; ${(f.size/1024).toFixed(1)} KB</div>
+        </div>
+      `).join('')}
+    </div>` : '';
+
+  const docsHtml = docs.length ? `
+    <div style="padding:16px 28px;border-top:1px solid #eee;background:#fff;">
+      <div style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:1.5px;color:#9a1f1f;margin-bottom:10px;">Attached Documents</div>
+      <ul style="padding-left:18px;margin:0;">
+        ${docs.map(f => `<li style="padding:3px 0;color:#222;">${escapeHtml(f.original_name)} <span style="color:#888;">(${(f.size/1024).toFixed(1)} KB)</span></li>`).join('')}
+      </ul>
+      <div style="font-size:12px;color:#888;margin-top:8px;">Documents are attached to this email.</div>
+    </div>` : '';
+
   return `<!DOCTYPE html><html><body style="font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;background:#f5f5f5;margin:0;padding:24px;">
     <div style="max-width:640px;margin:0 auto;background:#fff;border-radius:8px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);">
       <div style="background:#9a1f1f;color:#fff;padding:24px 28px;">
-        <div style="font-size:12px;letter-spacing:2px;opacity:0.8;text-transform:uppercase;">Serbian Transparency Initiative</div>
+        <div style="font-size:12px;letter-spacing:2px;opacity:0.8;text-transform:uppercase;">S.Transparency Initiative</div>
         <h1 style="margin:6px 0 0;font-size:22px;">${escapeHtml(title)}</h1>
       </div>
       <table style="width:100%;border-collapse:collapse;">${rowHtml}</table>
+      ${imagesHtml}
+      ${docsHtml}
       <div style="padding:16px 28px;background:#fafafa;color:#888;font-size:12px;border-top:1px solid #eee;">
         Reference <strong>${escapeHtml(reference)}</strong> &middot; Review at the admin dashboard.
       </div>
@@ -436,8 +510,12 @@ const server = http.createServer(async (req, res) => {
       if (type === 'trucking' && !fields.company) {
         return sendJSON(res, 400, { error: 'Please provide the company name.' });
       }
+      if (type === 'other' && !fields.subject) {
+        return sendJSON(res, 400, { error: 'Please provide the subject or organization.' });
+      }
 
-      const reference = generateRef(type === 'trucking' ? 'TRK' : 'CHR');
+      const prefix = type === 'trucking' ? 'TRK' : type === 'other' ? 'OTH' : 'CHR';
+      const reference = generateRef(prefix);
       const data = readDB();
       const record = {
         id: data.reports.length + 1,
@@ -456,7 +534,9 @@ const server = http.createServer(async (req, res) => {
       // Fire-and-forget email
       const emailSubject = type === 'trucking'
         ? `[STI] New Trucking Report — ${reference}`
-        : `[STI] New Church Report — ${reference}`;
+        : type === 'other'
+          ? `[STI] New Other Report — ${reference}`
+          : `[STI] New Church Report — ${reference}`;
       sendMail({
         to: NOTIFY_TO,
         subject: emailSubject,
@@ -554,7 +634,7 @@ const server = http.createServer(async (req, res) => {
 
 server.listen(PORT, () => {
   console.log(`\n  ╔════════════════════════════════════════╗`);
-  console.log(`  ║  Serbian Transparency Initiative       ║`);
+  console.log(`  ║  S.Transparency Initiative             ║`);
   console.log(`  ║  Running at http://localhost:${PORT}       ║`);
   console.log(`  ║  Email delivery: ${MAIL_ENABLED ? 'ENABLED ✓      ' : 'DISABLED ✗     '}    ║`);
   console.log(`  ╚════════════════════════════════════════╝\n`);

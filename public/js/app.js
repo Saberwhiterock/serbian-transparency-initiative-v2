@@ -119,6 +119,14 @@ if (truckingForm) {
   });
 }
 
+const otherForm = document.getElementById('otherForm');
+if (otherForm) {
+  otherForm.addEventListener('submit', (e) => {
+    e.preventDefault();
+    submitReport(otherForm, '/api/reports', 'other');
+  });
+}
+
 // ─── EVIDENCE FORM ───
 const evidenceForm = document.getElementById('evidenceForm');
 if (evidenceForm) {
