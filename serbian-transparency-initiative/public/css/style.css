@@ -324,8 +324,14 @@ h3 { font-size: 1.25rem; font-weight: 700; }
 
 .pillars-grid {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(3, 1fr);
   gap: 32px;
+}
+
+@media (max-width: 1100px) {
+  .pillars-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
 }
 
 .pillar-card {
@@ -850,6 +856,28 @@ h3 { font-size: 1.25rem; font-weight: 700; }
 .footer-col p {
   font-size: 13px;
   margin-top: 8px;
+}
+
+.btn-send-mail {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  background: var(--accent);
+  color: var(--white);
+  border: 1px solid var(--accent);
+  border-radius: var(--radius);
+  margin-bottom: 6px;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+}
+
+.btn-send-mail:hover {
+  background: var(--accent-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
 }
 
 .footer-legal {
