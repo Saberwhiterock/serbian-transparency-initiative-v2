@@ -95,3 +95,10 @@ Possible examples:
 Add a clean professional section on the homepage explaining that the organization stands with vulnerable communities and believes transparency should protect everyone equally.
 
 Please keep the design consistent with the current institutional style of the website.
+When the update is completed, please send me:
+
+1. A live preview link
+2. Screenshots of all added sections
+3. The exact files that were modified
+4. Confirmation that mobile responsiveness was tested
+5. Confirmation that all new report forms are working correctly
