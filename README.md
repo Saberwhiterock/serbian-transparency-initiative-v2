@@ -67,3 +67,31 @@ https://stransparency.com
 - Evidence uploads: `data/uploads/`
 
 Back up these two paths — they contain everything submitted.
+Please add a new section and reporting category to S.Transparency Initiative focused on supporting veterans and people with disabilities.
+
+The purpose is to allow veterans, disabled individuals, and people with special needs to safely report problems, abuse, neglect, discrimination, accessibility issues, financial exploitation, housing problems, healthcare barriers, transportation difficulties, or any situation that negatively affects their daily lives.
+
+The tone should remain professional, institutional, compassionate, and trustworthy.
+
+Please add:
+
+NEW CATEGORY:
+- Veterans & Disability Support
+
+DESCRIPTION:
+S.Transparency Initiative supports veterans, disabled individuals, and people with special needs by providing a safe and confidential platform where they can report issues affecting their quality of life, accessibility, dignity, safety, rights, or well-being.
+
+Possible examples:
+- Accessibility barriers
+- Workplace discrimination
+- Housing problems
+- Abuse or neglect
+- Financial exploitation
+- Healthcare access issues
+- Transportation difficulties
+- Veteran-related support issues
+- Government or institutional neglect
+
+Add a clean professional section on the homepage explaining that the organization stands with vulnerable communities and believes transparency should protect everyone equally.
+
+Please keep the design consistent with the current institutional style of the website.
