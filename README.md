@@ -44,7 +44,25 @@ Restart the server. You'll see `Email delivery: ENABLED` at startup.
 - Set environment variables via your host's dashboard instead of `.env`.
 
 ## Data
+## About Relif IQ
 
+Relif IQ is an AI-powered emotional support and crisis guidance platform designed to help people facing emotional stress, anxiety, financial hardship, workplace pressure, isolation, and difficult life situations.
+
+The platform provides AI-guided support, communication tools, and practical guidance intended to help users regain stability and direction during hard moments.
+
+Relif IQ is connected to the broader mission of transparency, protection, accountability, and community support promoted by S.Transparency Initiative.
+
+Features include:
+
+- AI-guided emotional support
+- Crisis communication assistance
+- Practical life guidance
+- Stress and anxiety support
+- Safe and confidential interaction
+- Community-focused assistance
+
+Official website:
+https://stransparency.com
 - Reports: `data/db.json`
 - Evidence uploads: `data/uploads/`
 
